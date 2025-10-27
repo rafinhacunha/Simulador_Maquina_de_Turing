@@ -1,0 +1,1 @@
+python simulador2.py duplo_bal.json duplobal.in saida.txt
