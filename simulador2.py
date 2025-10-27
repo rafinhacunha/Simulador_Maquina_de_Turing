@@ -2,8 +2,9 @@ import sys
 import json
 from collections import defaultdict
 import time
+'''lê o arquivo JSON da máquina de Turing'''
 
-def load_spec(path):
+def load_spec(path): 
     with open(path, 'r', encoding='utf-8') as f:
         spec = json.load(f)
 
@@ -11,6 +12,7 @@ def load_spec(path):
         raise ValueError("JSON inválido: precisa conter 'initial', 'final', 'white', 'transitions'.")
     return spec
 
+'''lê a fita de entrada'''
 def load_input_tape(path):
     with open(path, 'r', encoding='utf-8') as f:
         data = f.read()
@@ -19,6 +21,7 @@ def load_input_tape(path):
         data = data[:-1]
     return list(data)
 
+'''transforma as transições em um formato fácil de acessar'''
 def build_transition_map(transitions):
 
     tmap = defaultdict(list)
@@ -28,6 +31,7 @@ def build_transition_map(transitions):
         tmap[(frm, rd)].append((t['to'], t['write'], t['dir']))
     return tmap
 
+'''corta os espaços em branco no início/fim da fita'''
 def trim_tape(tape, white):
 
     if not tape:
@@ -41,6 +45,7 @@ def trim_tape(tape, white):
         right -= 1
     return tape[left:right+1] if left <= right else [white]
 
+'''executa a simulação da máquina passo a passo'''
 def run_tm(spec, input_tape, max_steps=20000000):
     white = spec['white']
     initial = spec['initial']
@@ -94,7 +99,8 @@ def run_tm(spec, input_tape, max_steps=20000000):
         
         state = to_state
         steps += 1
-
+        
+'''salva o resultado em um arquivo'''
 def write_output_tape(path, tape, white):
     trimmed = trim_tape(tape, white)
     
